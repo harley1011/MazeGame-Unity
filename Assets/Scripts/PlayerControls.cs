@@ -13,23 +13,21 @@ public class PlayerControls : DataStructures {
 
 	// Use this for initialization
 	void Start () {
-		//player = GameObject.FindGameObjectWithTag("Player");
-		//this.GetComponent<GenerateMaze>().mazeFloorPieces[i,j].gameObject.renderer.material.color = color;
+
 		sizeOfMap = this.GetComponent<GenerateMaze>().sizeOfMap;
 
+		this.GetComponent<GenerateMaze>().mazeFloorPieces[i,j].gameObject.renderer.material.color = color;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.UpArrow) &&  checkMove (directions.Up) )
-			setColor(--i,j);
-		else if (Input.GetKeyDown (KeyCode.DownArrow) &&  checkMove (directions.Down)) 
-			setColor(++i,j);
-		if (Input.GetKeyDown (KeyCode.LeftArrow) &&  checkMove (directions.Left)) 
-			setColor(i,--j);
-		if (Input.GetKeyDown (KeyCode.RightArrow) &&  checkMove (directions.Right)) 
-			setColor(i,++j);
+		checkMove("button");
 
+	}
+	public void resetPosition()
+	{
+		i = 0;
+		j = 0;
 	}
 	private void setColor(int i, int j)
 	{
@@ -38,33 +36,44 @@ public class PlayerControls : DataStructures {
 		else
 			this.GetComponent<GenerateMaze>().mazeFloorPieces[i,j].gameObject.renderer.material.color = color;
 	}
-	private bool checkMove ( directions move  )
+	private void checkMove ( string buttonMove )
 	{
 		maze = this.GetComponent<GenerateMaze>().getMaze();
-		if ( move == directions.Up )
+		if ( Input.GetKeyDown (KeyCode.UpArrow) || buttonMove == "up" )
 		{
 			if ( i > 0 && !maze[i,j].top )
-				return true;
+				setColor(--i,j);
 		}
-		else if ( move == directions.Down )
+		else if ( Input.GetKeyDown (KeyCode.DownArrow) || buttonMove == "down" )
 		{
 			if ( i < sizeOfMap - 1 && !maze[i,j].bottom )
-				return true;
+				setColor(++i,j);
 			
 		}
-		else if ( move == directions.Left )
+		else if ( Input.GetKeyDown (KeyCode.LeftArrow) || buttonMove == "left" )
 		{
 			if ( j > 0 && !maze[i,j].left )
-				return true;
+				setColor(i,--j);
 			
 		}
-		else if ( move == directions.Right )
+		else if ( Input.GetKeyDown (KeyCode.RightArrow) || buttonMove == "right" )
 		{
 			if ( j < sizeOfMap - 1 && !maze[i,j].right )
-				return true;
+				setColor(i,++j);
 			
 		}
-		
-		return false;
+
+	}
+	void OnGUI () {
+		float buttonSize = Screen.width / 12;
+		if (GUI.Button (new Rect (Screen.width / 6 - buttonSize,Screen.height / 2 - buttonSize,buttonSize,buttonSize), "↑")) 
+			checkMove("up");	
+		if (GUI.Button (new Rect (Screen.width / 6 - buttonSize,Screen.height / 2 + buttonSize,buttonSize,buttonSize), "↓")) 
+			checkMove("down");	
+		if (GUI.Button (new Rect (Screen.width / 6 - 2*buttonSize,Screen.height / 2,buttonSize,buttonSize), "←")) 
+			checkMove("left");
+		if (GUI.Button (new Rect (Screen.width / 6 ,Screen.height / 2,buttonSize,buttonSize), "→")) 
+			checkMove("right");
+	
 	}
 }

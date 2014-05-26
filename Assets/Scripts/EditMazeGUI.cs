@@ -10,6 +10,7 @@ public class EditMazeGUI : MonoBehaviour {
 			this.GetComponent<GenerateMaze>().sizeOfMap = int.Parse(stringToEdit);
 			this.GetComponent<GenerateMaze>().Start();
 			print ("Submit Maze Size");
+
 		}
 	}
 }

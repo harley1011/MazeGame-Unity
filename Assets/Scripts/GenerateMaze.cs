@@ -62,7 +62,10 @@ public class GenerateMaze : DataStructures {
 		GameObject[] theWalls = GameObject.FindGameObjectsWithTag("Wall");
 		for (int i = 0; i <= theWalls.Length - 1; i++ )
 				Destroy(theWalls[i]);
-		Destroy(GameObject.FindGameObjectWithTag("Floor"));
+		for ( int i = 0; i <= Mathf.Sqrt(mazeFloorPieces.Length) - 1; i++ )
+			for (int j = 0; j <= Mathf.Sqrt(mazeFloorPieces.Length) - 1; j++)
+				Destroy(mazeFloorPieces[i,j]);
+		this.GetComponent<PlayerControls>().resetPosition();
 				                
 	}
 	private void makeWalls() // Function is used to instantiate walls from a 2D array
